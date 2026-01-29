@@ -315,11 +315,199 @@ body.dark-theme {
   position: relative;
   border-radius: 1rem;
   overflow: hidden;
+  cursor: pointer;
+}
+
+.projects__gallery {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
 }
 
 .projects__card img {
+  position: absolute;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+
+.projects__card img.active {
+  opacity: 1;
+  position: relative;
+}
+
+/* Gallery Navigation Buttons */
+.gallery__prev,
+.gallery__next,
+.gallery__zoom {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: .75rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: .5rem;
+  transition: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.gallery__prev:hover,
+.gallery__next:hover,
+.gallery__zoom:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.gallery__prev {
+  top: 1rem;
+  left: .5rem;
+}
+
+.gallery__next {
+  top: 1rem;
+  right: .5rem;
+}
+
+.gallery__zoom {
+  bottom: 1rem;
+  right: 1rem;
+  padding: .6rem;
+  font-size: 1.3rem;
+}
+
+/* Show navigation when card is hovered or active (clicked) */
+.projects__card:hover .gallery__prev,
+.projects__card:hover .gallery__next,
+.projects__card:hover .gallery__zoom,
+.projects__card.active .gallery__prev,
+.projects__card.active .gallery__next,
+.projects__card.active .gallery__zoom {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Gallery Indicators */
+.gallery__indicators {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: .5rem;
+  z-index: 10;
+}
+
+.gallery__indicators .indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: .3s;
+}
+
+.gallery__indicators .indicator.active {
+  background: white;
+  width: 30px;
+  border-radius: 5px;
+}
+
+/* Lightbox Styles */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox__img {
+  max-width: 90%;
+  max-height: 90vh;
+  object-fit: contain;
+  animation: zoomIn .3s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.lightbox__close,
+.lightbox__prev,
+.lightbox__next {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  padding: 1rem;
+  font-size: 2rem;
+  cursor: pointer;
+  border-radius: .5rem;
+  transition: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.lightbox__close:hover,
+.lightbox__prev:hover,
+.lightbox__next:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox__close {
+  top: 2rem;
+  right: 2rem;
+}
+
+.lightbox__prev {
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox__next {
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox__counter {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: .5rem 1rem;
+  border-radius: 2rem;
+  font-size: var(--small-font-size);
+  backdrop-filter: blur(10px);
 }
 
 .projects__modal {
@@ -335,10 +523,12 @@ body.dark-theme {
   align-items: flex-end;
   padding: 1.5rem 1.25rem;
   transition: .3s;
+  overflow-y: auto;
 }
 
 .projects__subtitle, 
-.projects__title {
+.projects__title,
+.projects__description {
   color: #fff;
 }
 
@@ -348,7 +538,19 @@ body.dark-theme {
 
 .projects__title {
   font-size: var(--h3-font-size);
-  margin-bottom: .75rem;
+  margin-bottom: .5rem;
+}
+
+.projects__description {
+  font-size: var(--small-font-size);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.projects__buttons {
+  display: flex;
+  gap: .5rem;
 }
 
 .projects__button {
